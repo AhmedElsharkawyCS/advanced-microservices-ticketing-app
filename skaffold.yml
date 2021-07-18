@@ -1,0 +1,25 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - "./infrastructure/k8s/**/*"
+
+build:
+  local:
+    concurrency: 2
+    tryImportMissing: false
+    useBuildkit: false
+    useDockerCLI: false
+    push: false
+  artifacts:
+    - image: ahmedelsharkawy/authenticationservice
+      context: apps/authentication
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - dest: .
+            src: "src/**/*.ts"
