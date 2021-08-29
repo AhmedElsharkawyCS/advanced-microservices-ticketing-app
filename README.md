@@ -8,6 +8,7 @@
 
 - Architect large, scalable apps using a collection of microservices
 - Solve concurrency issues in a distributed systems environment
+- Use google cloud with skaffold to deploy the dev infrastructure
 - Build a Server-Side Rendered React App to render data from your microservices
 - Share reusable code between multiple Express servers using custom NPM packages
 - Communicate data between services using a lightning-fast event bus
@@ -31,7 +32,7 @@
 
 ## Notes for running the app
 
-1- Before running all you should add `127.0.0.1 posts.com` to hosts file >>
+1- Before running all you should add `127.0.0.1 ticketing.dev` to hosts file >>
 [ref](https://library.netapp.com/ecmdocs/ECMP1155586/html/GUID-DBF81E5C-CF3C-4B07-AF01-83A625F2B4BF.html)
 2- Download `docker` and install `kubernetes` and `ingress-nginx`
 3- Push all images of each `service` to docker hub using `yarn docker:build`
@@ -57,3 +58,5 @@ service is running
 - `Orders`
 - `Expiration`
 - `Payments`
+
+####

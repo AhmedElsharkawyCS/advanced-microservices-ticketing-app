@@ -12,6 +12,10 @@ build:
     useBuildkit: false
     useDockerCLI: false
     push: false
+
+  # googleCloudBuild:
+  #   projectId: ticketing-dev-323617
+
   artifacts:
     - image: ahmedelsharkawy/authenticationservice
       context: apps/authentication
