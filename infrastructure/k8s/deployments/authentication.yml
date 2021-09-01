@@ -19,3 +19,21 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "100m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentication-database
+  template:
+    metadata:
+      labels:
+        app: authentication-database
+    spec:
+      containers:
+        - name: authentication-database
+          image: mongo
