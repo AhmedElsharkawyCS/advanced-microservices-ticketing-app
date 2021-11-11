@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express"
+import JWT from "jsonwebtoken"
 import { body as validator, validationResult } from "express-validator"
 import { BadRequestError, RequestValidationError } from "../errors"
 import { User } from "../models"
@@ -20,6 +21,9 @@ router.post(
     const findUser = await User.findOne({ email })
     if (findUser) throw new BadRequestError("Email in use")
     const user = await User.build({ email, password })
+    delete user.password
+    const userJwt = JWT.sign(user, "secret key")
+    req.session.jwt = userJwt
     res.status(201).send(user)
   },
 )

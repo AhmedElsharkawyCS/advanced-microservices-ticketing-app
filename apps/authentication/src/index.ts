@@ -1,13 +1,20 @@
 import express, { json } from "express"
 import mongoose from "mongoose"
 import "express-async-errors"
+import cookieSession from "cookie-session"
 import { meRouter, signInRouter, signOutRouter, signUpRouter } from "./routes"
 import { errorHandler } from "./middlewares"
 import { NotFound } from "./errors"
 const app = express()
 const prefix = "/api"
-
+app.set("trust proxy", 1) // trust first proxy
 app.use(json())
+app.use(
+  cookieSession({
+    signed: false,
+    secure: true,
+  }),
+)
 app.get(prefix + "/users", (req, res, next) => {
   res.send("Authentication service works fine.")
 })
