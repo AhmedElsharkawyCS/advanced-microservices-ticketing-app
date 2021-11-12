@@ -19,6 +19,12 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "100m"
+          env:
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ticket-app
+                  key: JWT_SECRET_KEY
 ---
 apiVersion: apps/v1
 kind: Deployment

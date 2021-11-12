@@ -6,7 +6,7 @@ interface UserAttrs {
   password: string
 }
 interface UserModel extends mongoose.Model<UserDoc> {
-  build: (attr: UserAttrs) => Promise<UserAttrs>
+  build: (attr: UserAttrs) => Promise<UserAttrs & { _id: string }>
 }
 interface UserDoc extends mongoose.Document {
   password: string
@@ -25,7 +25,16 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { versionKey: false },
+  {
+    versionKey: false,
+    toJSON: {
+      transform: (doc, ret) => {
+        ret.id = ret._id
+        delete ret.password
+        delete ret._id
+      },
+    },
+  },
 )
 
 userSchema.pre("save", async function (done) {
@@ -39,7 +48,6 @@ userSchema.pre("save", async function (done) {
 userSchema.statics.build = (props: UserAttrs) => {
   return new User(props).save()
 }
-Password
-const User = mongoose.model<UserDoc, UserModel>("User", userSchema)
 
+const User = mongoose.model<UserDoc, UserModel>("User", userSchema)
 export { User }
