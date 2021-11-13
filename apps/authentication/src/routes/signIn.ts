@@ -20,7 +20,7 @@ router.post(
     const currentUser = { email: user.email, id: user._id }
     const userJwt = JWT.sign(currentUser, process.env.JWT_SECRET_KEY)
     req.session.jwt = userJwt
-    res.status(201).send(currentUser)
+    res.status(200).send(currentUser)
   },
 )
 
