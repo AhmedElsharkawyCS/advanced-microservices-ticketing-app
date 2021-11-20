@@ -4,20 +4,19 @@ deploy:
   kubectl:
     manifests:
       - "./infrastructure/k8s/**/*"
-
 build:
   local:
-    concurrency: 2
-    tryImportMissing: false
-    useBuildkit: false
-    useDockerCLI: false
+    concurrency: 4
+    # tryImportMissing: false
+    # useBuildkit: false
+    # useDockerCLI: false
     push: false
 
   # googleCloudBuild:
   #   projectId: ticketing-dev-323617
 
   artifacts:
-    - image: ahmedelsharkawy/authenticationservice
+    - image: ahmedelsharkawy/ticketing-authenticationservice
       context: apps/authentication
       docker:
         dockerfile: Dockerfile
@@ -25,5 +24,16 @@ build:
         squash: false
       sync:
         manual:
-          - dest: .
-            src: "src/**/*.ts"
+          - src: "src/**/*.ts"
+            dest: .
+
+    - image: ahmedelsharkawy/ticketing-client
+      context: apps/client
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
