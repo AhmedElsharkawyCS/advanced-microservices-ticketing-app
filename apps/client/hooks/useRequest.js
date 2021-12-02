@@ -1,6 +1,6 @@
 import { useState } from "react"
 import axios from "axios"
-export function useRequest({ method, url }) {
+export function useRequest({ method, url, onSuccess }) {
   const [errors, setErrors] = useState(null)
   const [loading, setLoading] = useState(false)
   const resetError = () => {
@@ -16,6 +16,7 @@ export function useRequest({ method, url }) {
         data,
       })
       setLoading(false)
+      if (typeof onSuccess === "function") onSuccess()
       return res.data
     } catch (err) {
       const defaultErr = [{ message: "Something went wrong, try again." }]

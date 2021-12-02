@@ -5,6 +5,7 @@ import Form from "@components/Form"
 import Grid from "@mui/material/Grid"
 import Link from "@components/Link"
 import ErrorAlert from "@components/Error"
+import { useRouter } from "next/router"
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail"
 import PasswordIcon from "@mui/icons-material/Password"
 import { TextInput } from "@components/Inputs"
@@ -13,9 +14,10 @@ import { Typography } from "@mui/material"
 import { useRequest } from "@hooks"
 
 export default function Register() {
+  const router = useRouter()
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
-  const { doRequest, errors, loading, resetError } = useRequest({ method: "post", url: "/api/users/signup" })
+  const { doRequest, errors, loading, resetError } = useRequest({ method: "post", url: "/api/users/signup", onSuccess: () => router.push("/") })
   const onSubmit = (event) => {
     event.preventDefault()
     doRequest({ email, password })

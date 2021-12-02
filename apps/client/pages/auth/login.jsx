@@ -4,6 +4,7 @@ import Paper from "@mui/material/Paper"
 import Form from "@components/Form"
 import Grid from "@mui/material/Grid"
 import Link from "@components/Link"
+import { useRouter } from "next/router"
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail"
 import PasswordIcon from "@mui/icons-material/Password"
 import { TextInput } from "@components/Inputs"
@@ -13,9 +14,10 @@ import ErrorAlert from "@components/Error"
 import { useRequest } from "@hooks"
 
 export default function Login() {
+  const router = useRouter()
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
-  const { doRequest, errors, loading, resetError } = useRequest({ method: "post", url: "/api/users/signin" })
+  const { doRequest, errors, loading, resetError } = useRequest({ method: "post", url: "/api/users/signin", onSuccess: () => router.push("/") })
   const onSubmit = (event) => {
     event.preventDefault()
     doRequest({ email, password })

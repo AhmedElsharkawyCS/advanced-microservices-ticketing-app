@@ -9,9 +9,9 @@
 - Architect large, scalable apps using a collection of microservices
 - Solve concurrency issues in a distributed systems environment
 - Use google cloud with skaffold to deploy the dev infrastructure
-- Build a Server-Side Rendered React App to render data from your microservices
+- Build a Server-Side Rendered nextjs App to render data from microservices
 - Share reusable code between multiple Express servers using custom NPM packages
-- Communicate data between services using a lightning-fast event bus
+- Communicate data between services using NATS
 - Deploy a multi-service app to the cloud with Docker with skaffold and Kubernetes
 - Leverage your Javascript/typescript skills to build a complex web app
 - Understand how enterprise companies design their infrastructure

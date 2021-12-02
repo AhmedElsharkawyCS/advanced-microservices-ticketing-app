@@ -5,8 +5,9 @@ import Box from "@mui/material/Box"
 import ProTip from "@components/ProTip"
 import Link from "@components/Link"
 import Copyright from "@components/Copyright"
+import axiosBuilder from "@api/axiosBuilder"
 
-export default function Index() {
+export default function LandingPage(props) {
   return (
     <Container maxWidth='sm'>
       <Box sx={{ my: 4, display: "flex", alignItems: "center", flexDirection: "column" }}>
@@ -24,4 +25,12 @@ export default function Index() {
       </Box>
     </Container>
   )
+}
+LandingPage.getInitialProps = async ({ req }) => {
+  try {
+    const { data } = await axiosBuilder({ req }).get("/api/users/me")
+    return data
+  } catch (error) {
+    return {}
+  }
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 chmod +x ./build.sh
 echo "Build new image..."
-docker build -t ahmedelsharkawy/ticketsservice .
+docker build -t ahmedelsharkawy/ticketing-ticketsservice .
 echo "Pushing to docker hub..."
-docker push ahmedelsharkawy/ticketsservice
+docker push ahmedelsharkawy/ticketing-ticketsservice

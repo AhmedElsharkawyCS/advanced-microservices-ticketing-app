@@ -2,10 +2,10 @@ import "express-async-errors"
 import express, { json } from "express"
 import cookieSession from "cookie-session"
 import { errorHandler, NotFound } from "@ahmedelsharkawyhelpers/ticketing-common"
-import { meRouter, signInRouter, signOutRouter, signUpRouter } from "./routes"
+import { createRouter, getRouter, updateRouter } from "./routes"
 
 const app = express()
-const prefix = "/api/users"
+const prefix = "/api"
 app.set("trust proxy", 1) // trust first proxy
 app.use(json())
 app.use(
@@ -16,9 +16,9 @@ app.use(
   }),
 )
 app.get(prefix, (req, res, next) => {
-  res.send("Authentication service works fine.")
+  res.send("Tickets service works fine.")
 })
-app.use(prefix, [meRouter, signInRouter, signUpRouter, signOutRouter])
+app.use(prefix, [createRouter, getRouter, updateRouter])
 app.all("*", () => {
   throw new NotFound()
 })
