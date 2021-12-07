@@ -1,4 +1,5 @@
 import request from "supertest"
+import { NatsClient } from "@ahmedelsharkawyhelpers/ticketing-common"
 import { app } from "../../app"
 import { Ticket } from "../../models"
 
@@ -35,5 +36,13 @@ describe("Test create new ticket", () => {
     const ticketsAfter = await Ticket.find({})
     expect(ticketsAfter.length).toEqual(1)
     expect(ticketsAfter[0].price).toEqual(20)
+  })
+  it("Should call publisher after creating a ticket", async () => {
+    const tickets = await Ticket.find({})
+    expect(tickets.length).toEqual(0)
+    const cookies = global.login()
+    const res = await request(app).post("/api/tickets").set("Cookie", cookies).send({ title: "ticket title", price: 20 })
+    expect(res.status).toEqual(201)
+    expect(NatsClient.client.publish).toHaveBeenCalled()
   })
 })

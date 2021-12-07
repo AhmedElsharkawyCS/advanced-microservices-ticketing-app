@@ -14,6 +14,7 @@ beforeAll(async () => {
   await mongoose.connect(mongoUri)
 })
 beforeEach(async () => {
+  jest.clearAllMocks()
   const collections = await mongoose.connection.db.collections()
   for (const collection of collections) {
     await collection.deleteMany({})
@@ -23,6 +24,16 @@ beforeEach(async () => {
 afterAll(async () => {
   await mongo.stop?.()
   await mongoose.connection.close()
+})
+
+jest.mock("@ahmedelsharkawyhelpers/ticketing-common/build/nats-events/natsClient.js", () => {
+  return {
+    client: {
+      publish: jest.fn().mockImplementation((subject: string, data: any, callback: () => void) => {
+        callback()
+      }),
+    },
+  }
 })
 
 global.login = () => {

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express"
-import { currentUser, requireAuth, validationRequest } from "@ahmedelsharkawyhelpers/ticketing-common"
+import { currentUser, requireAuth, validationRequest, NatsClient } from "@ahmedelsharkawyhelpers/ticketing-common"
 import { body } from "express-validator"
+import { TicketCreatedPublisher } from "../events"
 import { Ticket } from "../models"
 
 const router = Router()
@@ -13,6 +14,7 @@ router.post(
   validationRequest,
   async (req: Request, res: Response, next: NextFunction) => {
     const created = await Ticket.build({ ...req.body, userId: req.user?.id }).save()
+    new TicketCreatedPublisher(NatsClient.client).publish(created)
     res.status(201).send(created)
   },
 )

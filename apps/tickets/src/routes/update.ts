@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express"
-import { currentUser, NotFound, requireAuth, validationRequest, NotAuthorizedError } from "@ahmedelsharkawyhelpers/ticketing-common"
+import { currentUser, NotFound, requireAuth, validationRequest, NotAuthorizedError, NatsClient } from "@ahmedelsharkawyhelpers/ticketing-common"
 import { body } from "express-validator"
+import { TicketUpdatedPublisher } from "../events"
 import { Ticket } from "../models"
 
 const router = Router()
@@ -16,6 +17,7 @@ router.put(
     if (!found) throw new NotFound()
     if (found.userId !== req.user.id) throw new NotAuthorizedError()
     await found.set({ ...req.body }).save()
+    new TicketUpdatedPublisher(NatsClient.client).publish(found)
     res.status(200).send(found)
   },
 )
