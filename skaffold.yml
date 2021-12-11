@@ -36,6 +36,16 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: ahmedelsharkawy/ticketing-ordersservice
+      context: apps/orders
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
     - image: ahmedelsharkawy/ticketing-client
       context: apps/client
       docker:

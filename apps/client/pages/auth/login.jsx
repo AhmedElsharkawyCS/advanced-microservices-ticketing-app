@@ -59,7 +59,7 @@ export default function Login() {
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextInput
                 name='password'
                 type='password'

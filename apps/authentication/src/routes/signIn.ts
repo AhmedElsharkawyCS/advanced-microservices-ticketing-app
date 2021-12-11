@@ -8,7 +8,7 @@ import { Password } from "../services"
 const router = Router()
 
 router.post(
-  "/signin",
+  "/users/signin",
   [body("email").isEmail().withMessage("Email must be valid"), body("password").trim().notEmpty().withMessage("You must supply a password")],
   validationRequest,
   async (req: Request, res: Response, next: NextFunction) => {

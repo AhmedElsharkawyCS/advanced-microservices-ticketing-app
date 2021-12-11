@@ -7,7 +7,7 @@ import { User } from "../models"
 const router = Router()
 
 router.post(
-  "/signup",
+  "/users/signup",
   [
     validator("email").isEmail().withMessage("Email must be valid"),
     validator("password").trim().isLength({ min: 4, max: 25 }).withMessage("Password must be between 4 and 25 chars"),

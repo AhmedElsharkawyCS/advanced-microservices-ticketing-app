@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: orders
+          image: ahmedelsharkawy/ticketing-ordersservice
+          env:
+            - name: MONGO_URL
+              value: "mongodb://orders-database:27017/orders"
+            - name: NATS_CLUSTER_ID
+              value: "ticketing"
+            - name: NATS_URL
+              value: "http://nats:4222"
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ticket-app
+                  key: JWT_SECRET_KEY
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders-database
+  template:
+    metadata:
+      labels:
+        app: orders-database
+    spec:
+      containers:
+        - name: orders-database
+          image: mongo

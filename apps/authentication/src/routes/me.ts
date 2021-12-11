@@ -3,7 +3,7 @@ import { currentUser, requireAuth } from "@ahmedelsharkawyhelpers/ticketing-comm
 
 const router = Router()
 
-router.get("/me", currentUser, requireAuth, (req, res, next) => {
+router.get("/users/me", currentUser, requireAuth, (req, res, next) => {
   res.status(200).send({ currentUser: req.user })
 })
 
