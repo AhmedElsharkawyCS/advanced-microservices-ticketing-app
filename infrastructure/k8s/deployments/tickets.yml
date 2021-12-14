@@ -1,6 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: tickets-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tickets-database
+  template:
+    metadata:
+      labels:
+        app: tickets-database
+    spec:
+      containers:
+        - name: tickets-database
+          image: mongo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: tickets
 spec:
   replicas: 1
@@ -23,29 +41,6 @@ spec:
             - name: NATS_URL
               value: "http://nats:4222"
             - name: NATS_CLIENT_ID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
+              value: "ticketing-ticketsservice"
             - name: JWT_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: ticket-app
-                  key: JWT_SECRET_KEY
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: tickets-database
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: tickets-database
-  template:
-    metadata:
-      labels:
-        app: tickets-database
-    spec:
-      containers:
-        - name: tickets-database
-          image: mongo
+              value: "ticketing-jwt-secret-key"

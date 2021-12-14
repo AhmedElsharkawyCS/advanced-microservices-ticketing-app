@@ -4,11 +4,11 @@ import { app } from "./app"
 import { TicketCreatedListener, TicketUpdatedListener } from "./events"
 
 const main = async () => {
-  mongoose
+  await mongoose
     .connect(process.env.MONGO_URL)
     .then(() => console.log("orders db connected successfully"))
     .catch(() => console.log("orders db connection error"))
-  NatsClient.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, { url: process.env.NATS_URL })
+  await NatsClient.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, { url: process.env.NATS_URL })
     .then(() => {
       console.log("Connected to NATS!")
       new TicketCreatedListener(NatsClient.client).listen()

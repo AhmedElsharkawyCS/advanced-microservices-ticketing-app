@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express"
 import { currentUser, NotAuthorizedError, NotFound, requireAuth } from "@ahmedelsharkawyhelpers/ticketing-common"
-import { Order, Ticket } from "../models"
+import { Order } from "../models"
 
 const router = Router()
 

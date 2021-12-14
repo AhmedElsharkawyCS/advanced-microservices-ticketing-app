@@ -18,7 +18,8 @@ describe("Test order delete", () => {
 
   it("Should return 204 if order has been cancelled/delete", async () => {
     const cookies = global.login()
-    const ticket = await Ticket.build({ price: 20, title: "ticket" }).save()
+    const id = new mongoose.Types.ObjectId().toHexString()
+    const ticket = await Ticket.build({ price: 20, title: "ticket", id }).save()
     const orderRes = await request(app).post("/api/orders").set("Cookie", cookies).send({ ticketId: ticket.id })
     const res = await request(app).delete(`/api/orders/${orderRes.body.id}`).set("Cookie", cookies).send()
     expect(res.status).toEqual(204)

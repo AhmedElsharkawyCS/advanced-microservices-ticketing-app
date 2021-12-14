@@ -1,6 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: authentication-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentication-database
+  template:
+    metadata:
+      labels:
+        app: authentication-database
+    spec:
+      containers:
+        - name: authentication-database
+          image: mongo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: authentication
 spec:
   replicas: 1
@@ -19,25 +37,4 @@ spec:
             - name: MONGO_URL
               value: "mongodb://authentication-database:27017/authentication"
             - name: JWT_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: ticket-app
-                  key: JWT_SECRET_KEY
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: authentication-database
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: authentication-database
-  template:
-    metadata:
-      labels:
-        app: authentication-database
-    spec:
-      containers:
-        - name: authentication-database
-          image: mongo
+              value: "ticketing-jwt-secret-key"

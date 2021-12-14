@@ -6,7 +6,7 @@ deploy:
       - "./infrastructure/k8s/**/*"
 build:
   local:
-    concurrency: 4
+    concurrency: 1
     # tryImportMissing: false
     # useBuildkit: false
     # useDockerCLI: false

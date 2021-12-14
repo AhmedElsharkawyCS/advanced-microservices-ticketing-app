@@ -1,5 +1,5 @@
 import request from "supertest"
-import Mongoose from "mongoose"
+import mongoose from "mongoose"
 import { OrderStatus } from "@ahmedelsharkawyhelpers/ticketing-common"
 import { app } from "../../app"
 import { Ticket, Order } from "../../models"
@@ -20,12 +20,12 @@ describe("Test create new order", () => {
   })
   it("Should return a 404 if ticketId not provided", async () => {
     const cookies = global.login()
-    const id = new Mongoose.Types.ObjectId().toHexString()
+    const id = new mongoose.Types.ObjectId().toHexString()
     const res = await request(app).post("/api/orders").set("Cookie", cookies).send({ ticketId: id })
     expect(res.status).toEqual(404)
   })
   it("Should return a 400 if ticket already reserved", async () => {
-    const id = new Mongoose.Types.ObjectId().toHexString()
+    const id = new mongoose.Types.ObjectId().toHexString()
     const ticket = await Ticket.build({ price: 20, title: "ticket", id }).save()
     expect(ticket.price).toEqual(20)
     const cookies = global.login()
@@ -34,7 +34,7 @@ describe("Test create new order", () => {
     expect(res.status).toEqual(400)
   })
   it("Should create a ticket if require data is valid", async () => {
-    const id = new Mongoose.Types.ObjectId().toHexString()
+    const id = new mongoose.Types.ObjectId().toHexString()
     const ticket = await Ticket.build({ price: 20, title: "ticket", id }).save()
     expect(ticket.price).toEqual(20)
     const cookies = global.login()

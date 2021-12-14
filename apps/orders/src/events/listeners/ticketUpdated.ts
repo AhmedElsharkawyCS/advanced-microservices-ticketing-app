@@ -1,4 +1,4 @@
-import { EventQueueGroupNames, Listener, Subjects, TicketUpdatedEvent, NotFound } from "@ahmedelsharkawyhelpers/ticketing-common"
+import { EventQueueGroupNames, Listener, Subjects, TicketUpdatedEvent } from "@ahmedelsharkawyhelpers/ticketing-common"
 import { Message } from "node-nats-streaming"
 import { Ticket } from "../../models"
 export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
@@ -12,6 +12,8 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
       if (!ticket) throw new Error("Ticket not found")
       await ticket.set({ title, price }).save()
       msg.ack()
-    } catch (error) {}
+    } catch (error) {
+      console.log("TicketUpdatedListener:Error:", error)
+    }
   }
 }
