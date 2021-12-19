@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders-database
+  name: expiration-redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orders-database
+      app: expiration-redis
   template:
     metadata:
       labels:
-        app: orders-database
+        app: expiration-redis
     spec:
       containers:
-        - name: orders-database
-          image: mongo
+        - name: expiration-redis
+          image: redis
           resources:
             requests:
               memory: "64Mi"
@@ -23,32 +23,30 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orders
+  name: expiration
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orders
+      app: expiration
   template:
     metadata:
       labels:
-        app: orders
+        app: expiration
     spec:
       containers:
-        - name: orders
-          image: ahmedelsharkawy/ticketing-ordersservice
+        - name: expiration
+          image: ahmedelsharkawy/ticketing-expirationservice
           resources:
             requests:
               memory: "64Mi"
               cpu: "200m"
           env:
-            - name: MONGO_URL
-              value: "mongodb://orders-database:27017/orders"
             - name: NATS_CLUSTER_ID
               value: "ticketing"
             - name: NATS_URL
               value: "http://nats:4222"
             - name: NATS_CLIENT_ID
-              value: "ticketing-ordersservice"
-            - name: JWT_SECRET_KEY
-              value: "ticketing-jwt-secret-key"
+              value: "ticketing-expirationservice"
+            - name: REDIS_HOST
+              value: expiration-redis

@@ -10,7 +10,7 @@ router.delete("/orders/:id", currentUser, requireAuth, async (req: Request, res:
   if (!order) throw new NotFound()
   if (order.userId !== req.user.id) throw new NotAuthorizedError()
   await order.set({ status: OrderStatus.CANCELLED }).save()
-  new OrderCancelledPublisher(NatsClient.client).publish({ id: order.id, ticket: { id: order.ticket.id } })
+  new OrderCancelledPublisher(NatsClient.client).publish({ id: order.id, version: order.version, ticket: { id: order.ticket.id } })
   res.status(204).send(order)
 })
 

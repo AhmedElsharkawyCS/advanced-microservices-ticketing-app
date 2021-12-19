@@ -1,5 +1,13 @@
 import { NextFunction, Request, Response, Router } from "express"
-import { currentUser, NotFound, requireAuth, validationRequest, NotAuthorizedError, NatsClient } from "@ahmedelsharkawyhelpers/ticketing-common"
+import {
+  currentUser,
+  NotFound,
+  BadRequestError,
+  requireAuth,
+  validationRequest,
+  NotAuthorizedError,
+  NatsClient,
+} from "@ahmedelsharkawyhelpers/ticketing-common"
 import { body } from "express-validator"
 import { TicketUpdatedPublisher } from "../events"
 import { Ticket } from "../models"
@@ -15,6 +23,7 @@ router.put(
   async (req: Request, res: Response, next: NextFunction) => {
     const found = await Ticket.findById(req.params.id)
     if (!found) throw new NotFound()
+    if (!!found.orderId) throw new BadRequestError(`cant't edit a reserved ticket`)
     if (found.userId !== req.user.id) throw new NotAuthorizedError()
     await found.set({ ...req.body }).save()
     new TicketUpdatedPublisher(NatsClient.client).publish(found)

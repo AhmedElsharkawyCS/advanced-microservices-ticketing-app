@@ -15,3 +15,7 @@ spec:
       containers:
         - name: client
           image: ahmedelsharkawy/ticketing-client
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "200m"

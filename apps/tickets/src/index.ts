@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import { NatsClient } from "@ahmedelsharkawyhelpers/ticketing-common"
+import { OrderCancelledListener, OrderCreatedListener } from "./events"
 import { app } from "./app"
 
 const main = async () => {
@@ -10,6 +11,8 @@ const main = async () => {
   await NatsClient.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, { url: process.env.NATS_URL })
     .then(() => {
       console.log("Connected to NATS!")
+      new OrderCancelledListener(NatsClient.client).listen()
+      new OrderCreatedListener(NatsClient.client).listen()
       NatsClient.handleClientClosing()
     })
     .catch((err) => {

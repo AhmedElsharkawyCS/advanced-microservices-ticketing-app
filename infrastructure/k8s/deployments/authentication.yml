@@ -15,6 +15,10 @@ spec:
       containers:
         - name: authentication-database
           image: mongo
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "200m"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,6 +37,10 @@ spec:
       containers:
         - name: authentication
           image: ahmedelsharkawy/ticketing-authenticationservice
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "200m"
           env:
             - name: MONGO_URL
               value: "mongodb://authentication-database:27017/authentication"

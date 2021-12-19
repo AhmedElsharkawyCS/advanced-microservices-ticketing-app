@@ -41,7 +41,11 @@ router.post(
       userId: req.user.id,
     }).save()
     new OrderCreatedPublisher(NatsClient.client).publish({
-      ...order,
+      id: order.id,
+      status: order.status,
+      ticket: order.ticket,
+      userId: req.user.id,
+      version: order.version,
       expireAt: order.expireAt.toISOString(),
     })
     res.status(201).send(order)

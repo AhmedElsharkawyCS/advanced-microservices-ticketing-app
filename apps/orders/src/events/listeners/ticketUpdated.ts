@@ -6,14 +6,14 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
   // make sure only the event will send to only one listener form the group
   queueGroupName = EventQueueGroupNames.ORDER_SERVICE
   async onMessage(data: TicketUpdatedEvent["data"], msg: Message): Promise<void> {
-    const { price, title, id } = data
+    const { price, title, id, version } = data
     try {
-      const ticket = await Ticket.findById(id)
+      const ticket = await Ticket.findByEvent({ id, version })
       if (!ticket) throw new Error("Ticket not found")
       await ticket.set({ title, price }).save()
       msg.ack()
     } catch (error) {
-      console.log("TicketUpdatedListener:Error:", error)
+      throw new Error(error.message)
     }
   }
 }

@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta19
+apiVersion: skaffold/v2beta26
 kind: Config
 deploy:
   kubectl:
@@ -6,7 +6,7 @@ deploy:
       - "./infrastructure/k8s/**/*"
 build:
   local:
-    concurrency: 1
+    concurrency: 6
     # tryImportMissing: false
     # useBuildkit: false
     # useDockerCLI: false
@@ -55,4 +55,14 @@ build:
       sync:
         manual:
           - src: "**/*.js"
+            dest: .
+    - image: ahmedelsharkawy/ticketing-expirationservice
+      context: apps/expiration
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "**/*.ts"
             dest: .

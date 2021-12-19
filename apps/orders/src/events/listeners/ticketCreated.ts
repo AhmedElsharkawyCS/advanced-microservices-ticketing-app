@@ -11,7 +11,7 @@ export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
       await Ticket.build({ price, title, id }).save()
       msg.ack()
     } catch (error) {
-      console.log("TicketCreatedListener:Error:", error)
+      throw new Error(error.message)
     }
   }
 }
