@@ -6,7 +6,7 @@ deploy:
       - "./infrastructure/k8s/**/*"
 build:
   local:
-    concurrency: 6
+    concurrency: 1
     # tryImportMissing: false
     # useBuildkit: false
     # useDockerCLI: false
@@ -58,6 +58,16 @@ build:
             dest: .
     - image: ahmedelsharkawy/ticketing-expirationservice
       context: apps/expiration
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "**/*.ts"
+            dest: .
+    - image: ahmedelsharkawy/ticketing-paymentsservice
+      context: apps/payments
       docker:
         dockerfile: Dockerfile
         noCache: false

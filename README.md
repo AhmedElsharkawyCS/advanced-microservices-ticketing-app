@@ -1,8 +1,19 @@
-# Advanced microservices ticketing applications
+# Advanced microservices ticketing application
 
 ## live demo
 
 - [alias](0)
+
+## Requirements
+
+- Kubernetes
+- Skaffold
+- Docker
+- TypeScript
+- NodeJS
+- NGINX Ingress Controllers
+- Stripe
+- NextJS
 
 ## `Main concepts/Features/Topics`
 
@@ -30,7 +41,7 @@
 - `docker`
 - `Kubernetes`
 
-## Notes for running the app
+## Steps to run the app
 
 1- Before running all you should add `127.0.0.1 ticketing.dev` to hosts file >>
 [ref](https://library.netapp.com/ecmdocs/ECMP1155586/html/GUID-DBF81E5C-CF3C-4B07-AF01-83A625F2B4BF.html)
@@ -58,3 +69,4 @@ service is running
 - `Orders`
 - `Expiration`
 - `Payments`
+- `Client`

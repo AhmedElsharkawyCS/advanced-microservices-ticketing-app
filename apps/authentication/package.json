@@ -27,7 +27,7 @@
     "microservices",
     "jest"
   ],
-  "author": "",
+  "homepage": "https://github.com/AhmedElsharkawyCS/advanced-microservices-ticketing-app",
   "license": "ISC",
   "devDependencies": {
     "@types/cookie-session": "^2.0.43",
@@ -42,7 +42,7 @@
     "ts-node": "^10.2.1"
   },
   "dependencies": {
-    "@ahmedelsharkawyhelpers/ticketing-common": "^1.0.22",
+    "@ahmedelsharkawyhelpers/ticketing-common": "^1.0.26",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",

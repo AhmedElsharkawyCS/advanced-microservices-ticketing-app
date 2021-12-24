@@ -1,0 +1,20 @@
+{
+  "name": "ticketing",
+  "version": "1.0.0",
+  "description": "microservices ticketing application",
+  "main": "",
+  "scripts": {
+    "dev": "skaffold dev -log",
+    "nats:run": "cd infrastructure/k8s/deployments && kubectl apply -f nats.yml && cd .. && cd services && kubectl apply -f nats.yml"
+  },
+  "keywords": [
+    "Node",
+    "Typescript",
+    "javascript",
+    "express",
+    "microservices",
+    "jest"
+  ],
+  "homepage": "https://github.com/AhmedElsharkawyCS/advanced-microservices-ticketing-app",
+  "license": "ISC"
+}

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments-database
+  template:
+    metadata:
+      labels:
+        app: payments-database
+    spec:
+      containers:
+        - name: payments-database
+          image: mongo
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "200m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments
+  template:
+    metadata:
+      labels:
+        app: payments
+    spec:
+      containers:
+        - name: payments
+          image: ahmedelsharkawy/ticketing-paymentsservice
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "200m"
+          env:
+            - name: MONGO_URL
+              value: "mongodb://payments-database:27017/payments"
+            - name: NATS_CLUSTER_ID
+              value: "ticketing"
+            - name: NATS_URL
+              value: "http://nats:4222"
+            - name: NATS_CLIENT_ID
+              value: "ticketing-paymentsservice"
+            - name: JWT_SECRET_KEY
+              value: "ticketing-jwt-secret-key"
+            - name: STRIPE_SECRET_KEY
+              value: "sk_test_51DAcnfEVyvyNwkelazUWXKqfobxA1yIttvAOsMtaZWpNeG8pYrTGqRXGIj9T8ON1KQUbC3VH8uV3dQdh7iVoqjaZ00iLOEby0O"

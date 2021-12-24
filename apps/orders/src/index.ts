@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import { NatsClient } from "@ahmedelsharkawyhelpers/ticketing-common"
 import { app } from "./app"
-import { TicketCreatedListener, TicketUpdatedListener } from "./events"
+import { TicketCreatedListener, TicketUpdatedListener, ExpirationCompleteListener, PaymentCreatedListener } from "./events"
 
 const main = async () => {
   await mongoose
@@ -13,6 +13,8 @@ const main = async () => {
       console.log("Connected to NATS!")
       new TicketCreatedListener(NatsClient.client).listen()
       new TicketUpdatedListener(NatsClient.client).listen()
+      new ExpirationCompleteListener(NatsClient.client).listen()
+      new PaymentCreatedListener(NatsClient.client).listen()
       NatsClient.handleClientClosing()
     })
     .catch((err) => {

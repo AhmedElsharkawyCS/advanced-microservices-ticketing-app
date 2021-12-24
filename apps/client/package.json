@@ -11,7 +11,7 @@
     "docker:build": "sh ./build.sh"
   },
   "keywords": [],
-  "author": "",
+  "homepage": "https://github.com/AhmedElsharkawyCS/advanced-microservices-ticketing-app",
   "license": "ISC",
   "dependencies": {
     "@emotion/cache": "^11.6.0",
