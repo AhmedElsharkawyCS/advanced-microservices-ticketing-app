@@ -30,6 +30,9 @@ export default function Header({ currentUser }) {
               <Button sx={{ marginInlineEnd: "10px" }} color='inherit' onClick={() => push("/tickets")}>
                 Available Tickets
               </Button>
+              <Button sx={{ marginInlineEnd: "10px" }} color='inherit' onClick={() => push("/payments")}>
+                Payment history
+              </Button>
               <Button sx={{ marginInlineEnd: "50px" }} color='inherit' onClick={() => push("/orders")}>
                 My Orders
               </Button>

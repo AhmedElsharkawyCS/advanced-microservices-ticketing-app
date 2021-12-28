@@ -36,13 +36,15 @@ router.post(
     const order = await Order.findById(orderId)
     if (!order) throw new NotFound()
     if (user.id !== order.userId) throw new NotAuthorizedError()
-    if (order.status === OrderStatus.CANCELLED) throw new BadRequestError("Cannot pay for an cancelled order ")
+    if (order.status === OrderStatus.CANCELLED) throw new BadRequestError("Cannot pay for an cancelled order")
+    if (order.status === OrderStatus.COMPLETE) throw new BadRequestError("Order is already paid")
     const { id, status } = await stripe.charges.create({
       amount: order.price * 100,
       source: token,
       currency: "usd",
     })
     const payment = await Payment.build({ chargeId: id, status, order }).save()
+    order.set({ status: OrderStatus.COMPLETE }).save()
     new PaymentCreatedPublisher(NatsClient.client).publish({ chargeId: payment.chargeId, id: payment.id, orderId: order.id })
     res.status(201).send(payment)
   },

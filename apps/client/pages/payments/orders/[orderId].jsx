@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import Container from "@mui/material/Container"
 import Paper from "@mui/material/Paper"
 import Form from "@components/Form"
@@ -6,15 +6,16 @@ import { useRouter } from "next/router"
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney"
 import Grid from "@mui/material/Grid"
 import { TextInput } from "@components/Inputs"
-import { Button } from "@components/Buttons"
 import { Typography } from "@mui/material"
 import ErrorAlert from "@components/Error"
 import Chip from "@mui/material/Chip"
 import StripeButton from "@components/StripeButton"
 import { useRequest } from "@hooks"
+import { timerDown } from "@utils"
 
-export default function OrderInfo({ order }) {
+export default function OrderInfo({ order, currentUser }) {
   const { push } = useRouter()
+  const [timer, setTimer] = useState({})
   const { doRequest, errors } = useRequest({
     method: "post",
     url: `/api/payments`,
@@ -29,7 +30,15 @@ export default function OrderInfo({ order }) {
       token: token,
     })
   }
-  const diffDate = (new Date(order?.expireAt).getTime() - new Date().getTime()) / 60000
+  useEffect(() => {
+    setTimer(timerDown(order?.expireAt))
+    const interval = setInterval(() => {
+      setTimer(timerDown(order?.expireAt))
+    }, 1000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   return (
     <Container maxWidth='xl' sx={{ display: "flex", justifyContent: "center", height: "100%" }}>
@@ -102,10 +111,15 @@ export default function OrderInfo({ order }) {
               <Grid item xs={12}>
                 <Grid container spacing={1}>
                   <Grid item xs={12} display='flex' justifyContent={"center"}>
-                    <Chip color='info' label={diffDate >= 0 ? `Will expire after: ${parseInt(diffDate)} minutes` : "Already expired"} />
+                    <Chip color='info' label={timer.isTimeUp ? "Order has been expired" : `Will expire after: ${timer.minutes}m ${timer.seconds}s`} />
                   </Grid>
                   <Grid item xs={12} display='flex' justifyContent={"center"}>
-                    <StripeButton amountInCents={order.ticket.price * 100} disabled={diffDate < 0} onSubmit={(payload) => onSubmit(payload.id)} />
+                    <StripeButton
+                      user={currentUser}
+                      amountInCents={order.ticket.price * 100}
+                      disabled={timer.isTimeUp}
+                      onSubmit={(payload) => onSubmit(payload.id)}
+                    />
                   </Grid>
                 </Grid>
               </Grid>
