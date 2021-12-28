@@ -19,8 +19,8 @@ export default function AppComponent(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Layout user={currentUser}>
-          <Component {...pageProps} />
+        <Layout currentUser={currentUser}>
+          <Component {...pageProps} currentUser={currentUser} />
         </Layout>
       </ThemeProvider>
     </CacheProvider>
@@ -29,8 +29,10 @@ export default function AppComponent(props) {
 
 AppComponent.getInitialProps = async ({ ctx, Component }) => {
   try {
-    const { data } = await axiosBuilder(ctx).get("/api/users/me")
-    const pageProps = await Component.getInitialProps?.(ctx)
+    const apiCall = axiosBuilder(ctx)
+    const { data } = await apiCall.get("/api/users/me")
+    const options = { apiCall, currentUser: data.currentUser }
+    const pageProps = await Component.getInitialProps?.(ctx, options)
     return { pageProps, ...data }
   } catch (error) {
     return {}

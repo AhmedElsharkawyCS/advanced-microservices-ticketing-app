@@ -15,7 +15,7 @@ import HomeIcon from "@mui/icons-material/Home"
 import { useRouter } from "next/router"
 import { useRequest } from "@hooks"
 
-export default function Header({ user }) {
+export default function Header({ currentUser }) {
   const { push } = useRouter()
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -25,8 +25,16 @@ export default function Header({ user }) {
             Ticketing
           </Typography>
 
-          {user ? (
-            <AuthenticatedUser push={push} user={user} />
+          {currentUser ? (
+            <Box sx={{ display: "flex" }}>
+              <Button sx={{ marginInlineEnd: "10px" }} color='inherit' onClick={() => push("/tickets")}>
+                Available Tickets
+              </Button>
+              <Button sx={{ marginInlineEnd: "50px" }} color='inherit' onClick={() => push("/orders")}>
+                My Orders
+              </Button>
+              <AuthenticatedUser push={push} currentUser={currentUser} />
+            </Box>
           ) : (
             <Button color='inherit' onClick={() => push("/auth/login")}>
               Login
@@ -38,7 +46,7 @@ export default function Header({ user }) {
   )
 }
 
-function AuthenticatedUser({ push, user }) {
+function AuthenticatedUser({ push, currentUser }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const { doRequest } = useRequest({ method: "post", onSuccess: () => push("/"), url: "/api/users/signout" })
   const handleOpenMenu = (event) => {
@@ -54,7 +62,7 @@ function AuthenticatedUser({ push, user }) {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title='User Menu'>
         <IconButton onClick={handleOpenMenu} sx={{ p: 0 }}>
-          <Avatar alt={user?.email || "Avatar"} src='/static/images/avatar/2.jpg' />
+          <Avatar>{(currentUser?.email || "Avatar").toUpperCase().charAt(0)}</Avatar>
         </IconButton>
       </Tooltip>
       <Menu

@@ -1,10 +1,10 @@
 import React from "react"
-import Header from "./Header"
+import Header from "../Header/Header"
 
-export default function Layout({ children, user }) {
+export default function Layout({ children, currentUser }) {
   return (
     <React.Fragment>
-      <Header user={user} />
+      <Header currentUser={currentUser} />
       <main>{children}</main>
     </React.Fragment>
   )

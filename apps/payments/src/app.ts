@@ -1,11 +1,13 @@
 import "express-async-errors"
 import express, { json } from "express"
 import cookieSession from "cookie-session"
+import cors from "cors"
 import { errorHandler, NotFound } from "@ahmedelsharkawyhelpers/ticketing-common"
 import { createRouter, getRouter } from "./routes"
 
 const app = express()
 const prefix = "/api"
+app.use(cors())
 app.set("trust proxy", 1) // trust first proxy
 app.use(json())
 app.use(

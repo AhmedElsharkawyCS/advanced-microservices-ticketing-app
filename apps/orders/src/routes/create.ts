@@ -27,7 +27,7 @@ router.post(
   ],
   validationRequest,
   async (req: Request, res: Response, next: NextFunction) => {
-    const ticket = await Ticket.findById(req.body.ticketId).exec()
+    const ticket = await Ticket.findById(req.body.ticketId)
     if (!ticket) throw new NotFound()
     const isReserved = await ticket.isReserved()
     if (isReserved) throw new BadRequestError("Ticket is already reserved")

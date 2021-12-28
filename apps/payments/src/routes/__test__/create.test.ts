@@ -41,6 +41,4 @@ describe("Test create new payment", () => {
     expect(chargeOptions.amount).toEqual(20 * 100)
     expect(chargeOptions.currency).toEqual("usd")
   })
-  // pk_test_51DAcnfEVyvyNwkelxkOywsjowwN1os1rlVDwB245egofEm6qlBu6lNRJ9fqqYR7TxZ20INVFUsjisQfRaBZyMRkF00y2vPcC84
-  // sk_test_51DAcnfEVyvyNwkelazUWXKqfobxA1yIttvAOsMtaZWpNeG8pYrTGqRXGIj9T8ON1KQUbC3VH8uV3dQdh7iVoqjaZ00iLOEby0O
 })

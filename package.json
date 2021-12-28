@@ -4,8 +4,9 @@
   "description": "microservices ticketing application",
   "main": "",
   "scripts": {
-    "dev": "skaffold dev -log",
-    "nats:run": "cd infrastructure/k8s/deployments && kubectl apply -f nats.yml && cd .. && cd services && kubectl apply -f nats.yml"
+    "dev": "npm run nats:run && skaffold dev -log",
+    "nats:run": "cd infrastructure/k8s/deployments && kubectl apply -f nats.yml && cd .. && cd services && kubectl apply -f nats.yml",
+    "client": "cd apps/client && npm run dev"
   },
   "keywords": [
     "Node",
