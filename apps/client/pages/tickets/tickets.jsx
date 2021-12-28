@@ -17,7 +17,7 @@ export default function Tickets({ tickets }) {
       push(`/tickets/${row.id}`)
     }
     return (
-      <IconButton aria-label='info' size='medium' onClick={onClick}>
+      <IconButton aria-label='info' size='medium' onClick={onClick} disabled={row.orderId}>
         <InfoIcon fontSize='inherit' />
       </IconButton>
     )

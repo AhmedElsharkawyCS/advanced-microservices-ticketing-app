@@ -12,11 +12,16 @@ import ListItemIcon from "@mui/material/ListItemIcon"
 import Avatar from "@mui/material/Avatar"
 import LogoutIcon from "@mui/icons-material/Logout"
 import HomeIcon from "@mui/icons-material/Home"
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber"
+import HistoryIcon from "@mui/icons-material/History"
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
 import { useRouter } from "next/router"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import { useRequest } from "@hooks"
 
 export default function Header({ currentUser }) {
   const { push } = useRouter()
+  const isMobile = useMediaQuery("(max-width:700px)")
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
@@ -27,15 +32,7 @@ export default function Header({ currentUser }) {
 
           {currentUser ? (
             <Box sx={{ display: "flex" }}>
-              <Button sx={{ marginInlineEnd: "10px" }} color='inherit' onClick={() => push("/tickets")}>
-                Available Tickets
-              </Button>
-              <Button sx={{ marginInlineEnd: "10px" }} color='inherit' onClick={() => push("/payments")}>
-                Payment history
-              </Button>
-              <Button sx={{ marginInlineEnd: "50px" }} color='inherit' onClick={() => push("/orders")}>
-                My Orders
-              </Button>
+              {!isMobile && <Links push={push} />}
               <AuthenticatedUser push={push} currentUser={currentUser} />
             </Box>
           ) : (
@@ -48,9 +45,25 @@ export default function Header({ currentUser }) {
     </Box>
   )
 }
+function Links({ push }) {
+  return (
+    <>
+      <Button sx={{ marginInlineEnd: "10px" }} color='inherit' onClick={() => push("/tickets")}>
+        Sell Tickets
+      </Button>
+      <Button sx={{ marginInlineEnd: "10px" }} color='inherit' onClick={() => push("/payments")}>
+        Payment history
+      </Button>
+      <Button sx={{ marginInlineEnd: "50px" }} color='inherit' onClick={() => push("/orders")}>
+        My Orders
+      </Button>
+    </>
+  )
+}
 
 function AuthenticatedUser({ push, currentUser }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
+  const isMobile = useMediaQuery("(max-width:700px)")
   const { doRequest } = useRequest({ method: "post", onSuccess: () => push("/"), url: "/api/users/signout" })
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget)
@@ -107,7 +120,7 @@ function AuthenticatedUser({ push, currentUser }) {
           key={"0"}
           onClick={(e) => {
             handleCloseMenu()
-            push(setting.path)
+            push("/")
           }}
         >
           <ListItemIcon>
@@ -115,8 +128,48 @@ function AuthenticatedUser({ push, currentUser }) {
           </ListItemIcon>
           Home
         </MenuItem>
+        {isMobile && (
+          <>
+            <MenuItem
+              key={"2"}
+              onClick={(e) => {
+                handleCloseMenu()
+                push("/tickets")
+              }}
+            >
+              <ListItemIcon>
+                <ConfirmationNumberIcon fontSize='small' />
+              </ListItemIcon>
+              Sell Tickets
+            </MenuItem>
+            <MenuItem
+              key={"3"}
+              onClick={(e) => {
+                handleCloseMenu()
+                push("/orders")
+              }}
+            >
+              <ListItemIcon>
+                <AddShoppingCartIcon fontSize='small' />
+              </ListItemIcon>
+              My Orders
+            </MenuItem>
+            <MenuItem
+              key={"4"}
+              onClick={(e) => {
+                handleCloseMenu()
+                push("/payments")
+              }}
+            >
+              <ListItemIcon>
+                <HistoryIcon fontSize='small' />
+              </ListItemIcon>
+              Payment History
+            </MenuItem>
+          </>
+        )}
         <MenuItem
-          key={"1"}
+          key={"5"}
           onClick={() => {
             handleCloseMenu()
             signOut()
