@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express"
 import JWT from "jsonwebtoken"
 import { body as validator } from "express-validator"
 import { validationRequest, BadRequestError } from "@ahmedelsharkawyhelpers/ticketing-common"
+import { Password } from "../services"
 import { User } from "../models"
 
 const router = Router()
@@ -17,7 +18,8 @@ router.post(
     const { email, password } = req.body
     const findUser = await User.findOne({ email })
     if (findUser) throw new BadRequestError("This email address already exists")
-    const user = await User.build({ email, password }).save()
+    const hashedPass = await Password.toHash(password)
+    const user = await User.build({ email, password: hashedPass }).save()
     const currentUser = { email: user.email, id: user.id }
     const userJwt = JWT.sign(currentUser, process.env.JWT_SECRET_KEY)
     req.session.jwt = userJwt
