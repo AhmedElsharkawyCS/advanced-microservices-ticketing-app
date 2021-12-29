@@ -23,5 +23,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies and run test cases
-      - run: cd authentication
-      - run: ls
+        run: cd authentication && npm install && npm npm test:ci
