@@ -8,7 +8,7 @@ import { createRouter, getRouter, updateRouter } from "./routes"
 const app = express()
 const prefix = "/api"
 app.use(cors())
-app.set("trust proxy", 1) // trust first proxy
+app.set("trust proxy", 1)
 app.use(json())
 app.use(
   cookieSession({
