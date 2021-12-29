@@ -1,4 +1,4 @@
-name: "Test microservice ticketing application"
+name: "Test-Authentication"
 on:
   push:
     branches:
@@ -24,4 +24,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies and run test cases
-        run: cd authentication && npm install && npm test
+        run: cd authentication && npm install && npm run test:ci

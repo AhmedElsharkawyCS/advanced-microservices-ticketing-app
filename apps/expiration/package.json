@@ -9,7 +9,8 @@
     "docker:build": "sh ./build.sh",
     "watch": "tsc -w",
     "build": "tsc",
-    "test": "jest --watchAll --no-cache"
+    "test": "jest --watchAll --no-cache",
+    "test:ci": "jest"
   },
   "homepage": "https://github.com/AhmedElsharkawyCS/advanced-microservices-ticketing-app",
   "license": "ISC",

@@ -1,0 +1,27 @@
+name: "Test-Order"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+defaults:
+  run:
+    working-directory: ./apps
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        #only run test cases with node version 16.x
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies and run test cases
+        run: cd orders && npm install && npm run test:ci

@@ -10,7 +10,7 @@
     "watch": "tsc -w",
     "build": "tsc",
     "test": "jest --watchAll --no-cache",
-    "test:file": "jest -i ./routes/__test__/create.test.ts"
+    "test:ci": "jest"
   },
   "jest": {
     "preset": "ts-jest",
