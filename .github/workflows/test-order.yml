@@ -1,9 +1,11 @@
 name: "Test-Order"
 on:
   push:
+    paths: ["apps/orders/**"]
     branches:
       - main
   pull_request:
+    paths: ["apps/orders/**"]
     branches:
       - main
 defaults:

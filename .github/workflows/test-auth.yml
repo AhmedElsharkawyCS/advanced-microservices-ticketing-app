@@ -1,9 +1,11 @@
 name: "Test-Authentication"
 on:
   push:
+    paths: ["apps/authentication/**"]
     branches:
       - main
   pull_request:
+    paths: ["apps/authentication/**"]
     branches:
       - main
 defaults:
